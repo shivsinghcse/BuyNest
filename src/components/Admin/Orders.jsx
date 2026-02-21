@@ -208,53 +208,93 @@ const Orders = () => {
     return(
         <>
             <AdminLayout>
-                <div>
-                    <h1 className='text-xl font-semibold underline underline-offset-4 text-center'>Orders</h1>
-                    <div className='my-8'>
-                        <table className='w-full'>
-                            <thead>
-                                <tr className=' bg-(--secondary-color) text-zinc-300'>
-                                    <th className='py-4'>Order Id</th>
-                                    <th>Customer's Name</th>
-                                    <th>Email</th>
-                                    <th>Mobile</th>
-                                    <th>Product</th>
-                                    <th>Amount</th>
-                                    <th>Order Date</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
+                <div className="w-full">
+                    <h1 className="text-xl font-semibold underline underline-offset-4 text-center">
+                        Orders
+                    </h1>
 
-                            <tbody>
+                    {/* DESKTOP TABLE */}
+                    <div className="hidden md:block my-8 w-full overflow-x-auto">
+                        <table className="min-w-225 w-full">
+                        <thead>
+                            <tr className="bg-(--secondary-color) text-zinc-300 text-sm">
+                            <th className="py-4 px-3">Order Id</th>
+                            <th className="px-3">Customer</th>
+                            <th className="px-3">Email</th>
+                            <th className="px-3">Mobile</th>
+                            <th className="px-3">Product</th>
+                            <th className="px-3">Amount</th>
+                            <th className="px-3">Order Date</th>
+                            <th className="px-3">Status</th>
+                            </tr>
+                        </thead>
 
-                                {
-                                    orders.map((order, index) => {
-                                        return(
-                                            <tr className='text-center' key={order.orderId} style={{
-                                                background: (index) % 2 === 0 ? '#fff' : '#e6e6eb'
-                                            }}>
-                                                <td className='py-4'>{order.orderId}</td>
-                                                <td className='capitalize'>{order.customerName}</td>
-                                                <td>{order.email}</td>
-                                                <td>{order.mobile}</td>
-                                                <td  className='capitalize'>{order.product}</td>
-                                                <td>₹{order.amount.toLocaleString()}</td>
-                                                <td>{order.date}</td>
-                                                <td>
-                                                    <select name="orderStatus" id="orderStatus" className='capitalize focus:outline-0 border border-gray-300 p-1 rounded text-gray-600'>
-                                                        <option value="pending">Pending</option>
-                                                        <option value="processing">Processing</option>
-                                                        <option value="dispatched">Dispatched</option>
-                                                        <option value="delivered">Delivered</option>
-                                                        <option value="returned">Returned</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        )
-                                    })
-                                }
-                            </tbody>
+                        <tbody>
+                            {orders.map((order, index) => (
+                            <tr
+                                key={order.orderId}
+                                className="text-center text-sm"
+                                style={{
+                                background: index % 2 === 0 ? "#fff" : "#f1f5f9",
+                                }}
+                            >
+                                <td className="py-4 px-3">{order.orderId}</td>
+                                <td className="capitalize px-3">{order.customerName}</td>
+                                <td className="px-3">{order.email}</td>
+                                <td className="px-3">{order.mobile}</td>
+                                <td className="capitalize px-3">{order.product}</td>
+                                <td className="px-3">₹{order.amount.toLocaleString()}</td>
+                                <td className="px-3">{order.date}</td>
+                                <td className="px-3">
+                                <select className="capitalize border border-gray-300 p-1 rounded text-gray-600">
+                                    <option value={'pending'}>Pending</option>
+                                    <option value={'processing'}>Processing</option>
+                                    <option value={'dispatched'}>Dispatched</option>
+                                    <option value={'delivered'}>Delivered</option>
+                                    <option value={'returned'}>Returned</option>
+                                </select>
+                                </td>
+                            </tr>
+                            ))}
+                        </tbody>
                         </table>
+                    </div>
+
+                    {/* MOBILE CARDS */}
+                    <div className="md:hidden space-y-4 my-6">
+                        {orders.map((order, index) => (
+                            <div
+                                key={order.orderId}
+                                className="border rounded-xl p-4 shadow-sm space-y-2"
+                                style={{
+                                background: index % 2 === 0 ? "#fff" : "#f8fafc",
+                                }}
+                            >
+                                <div className="flex justify-between text-sm font-semibold">
+                                <span>{order.orderId}</span>
+                                <span className="text-gray-500">{order.date}</span>
+                                </div>
+
+                                <div className="text-sm capitalize">{order.customerName}</div>
+                                <div className="text-sm text-gray-500">{order.email}</div>
+                                <div className="text-sm">{order.mobile}</div>
+                                <div className="text-sm capitalize">{order.product}</div>
+
+                                <div className="flex justify-between items-center pt-2">
+                                <span className="font-semibold">
+                                    ₹{order.amount.toLocaleString()}
+                                </span>
+
+                                <select className="capitalize border border-gray-300 p-1 rounded text-gray-600 text-sm">
+                                    <option value={'pending'}>Pending</option>
+                                    <option value={'processing'}>Processing</option>
+                                    <option value={'dispatched'}>Dispatched</option>
+                                    <option value={'delivered'}>Delivered</option>
+                                    <option value={'returned'}>Returned</option>
+                                </select>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </AdminLayout>
