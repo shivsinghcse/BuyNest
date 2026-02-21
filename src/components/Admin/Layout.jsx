@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 
-const Admin = () => {
+const Layout = ({children}) => {
     const [size, setSize] = useState('280px')
     const [showAccountMenu, setShowAccountMenu] = useState(false)
     const toggleDrawer = () => {
@@ -21,7 +21,7 @@ const Admin = () => {
                     marginLeft: size,
                     transition: '0.3s',
                 }}>
-                <nav className="bg-white py-6 px-8 shadow-xl flex justify-between items-center" >
+                <nav className="bg-white py-4 px-8 shadow-xl flex justify-between items-center sticky top-0" >
                     <div className="flex items-center gap-4">
                         <button 
                             onClick={toggleDrawer} 
@@ -35,9 +35,9 @@ const Admin = () => {
                     <div>
                         <button className="relative">
                             <img 
-                                src="./images/avatar.png" 
+                                src="/images/avatar.jpg" 
                                 alt="admin image"
-                                className="border p-1 w-12 h-12 rounded-full hover:cursor-pointer" 
+                                className="border-2 border-(--primary-color) shadow p-1 w-12 h-12 rounded-full hover:cursor-pointer" 
                                 onClick={ () => {
                                     setShowAccountMenu(!showAccountMenu)
                                 }}
@@ -48,7 +48,7 @@ const Admin = () => {
                                     <h1 className="text-lg font-semibold">Shiv Singh</h1>
                                     <p className="text-gray-500 pb-2">singhshiv0204@gmail.com</p>
                                     <hr className=" w-full border-gray-300"/>
-                                    <button className="font-semibold space-x-2">
+                                    <button className="font-semibold space-x-2 hover:cursor-pointer transition active:scale-95">
                                         <i className="ri-logout-box-line"></i>
                                         <span>Logout</span>
                                     </button>
@@ -56,11 +56,12 @@ const Admin = () => {
                             }
                         </button>
                     </div>
-                    
                 </nav>
+                <div className="p-6">{children}</div> 
+
             </section>
         </>
     )
 }
 
-export default Admin
+export default Layout
