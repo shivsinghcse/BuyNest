@@ -1,7 +1,20 @@
+import {
+    BrowserRouter,
+    Routes,
+    Route
+} from 'react-router-dom'
+import Admin from './components/Admin'
+import 'remixicon/fonts/remixicon.css'
+
 const App = () => {
     return (
         <>
-            <h1>Hello</h1>
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/' element={<h1>Welcome to Homepage</h1>}/>
+                    <Route path='/admin' element={<Admin />}/>
+                </Routes>
+            </BrowserRouter>
         </>
     )
 }
