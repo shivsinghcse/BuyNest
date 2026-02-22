@@ -231,7 +231,7 @@ const [customers, setCustomers] = useState([
                                 <td className="capitalize px-3 py-4">
                                     <div className='flex gap-3 items-center justify-center'>
                                         <img 
-                                            src="/public/images/avatar.jpg" 
+                                            src="/images/avatar.jpg" 
                                             alt="customers image" 
                                             className='w-8 h-8 rounded-full' 
                                         />
