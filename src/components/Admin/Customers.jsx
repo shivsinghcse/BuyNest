@@ -220,9 +220,9 @@ const [customers, setCustomers] = useState([
                         </thead>
 
                         <tbody>
-                            {customers.map((order, index) => (
+                            {customers.map((customer, index) => (
                             <tr
-                                key={order.id}
+                                key={customer.id}
                                 className="text-center text-sm"
                                 style={{
                                 background: index % 2 === 0 ? "#fff" : "#f1f5f9",
@@ -236,19 +236,19 @@ const [customers, setCustomers] = useState([
                                             className='w-8 h-8 rounded-full' 
                                         />
                                         <div className='flex flex-col font-semibold'>
-                                            <span>{order.customerName}</span>
-                                            <small className='text-gray-500'>{order.date}</small>
+                                            <span>{customer.customerName}</span>
+                                            <small className='text-gray-500'>{customer.date}</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td className="px-3">{order.email}</td>
-                                <td className="px-3">{order.mobile}</td>
-                                <td className="px-3">{order.date}</td>
+                                <td className="px-3">{customer.email}</td>
+                                <td className="px-3">{customer.mobile}</td>
+                                <td className="px-3">{customer.date}</td>
                                 <td className="px-3">
-                                    {order.address.city},
-                                    {order.address.state},
-                                    {order.address.pincode},
-                                    {order.address.country}
+                                    {customer.address.city},
+                                    {customer.address.state},
+                                    {customer.address.pincode},
+                                    {customer.address.country}
                                     
                                 </td>
                             </tr>
@@ -259,30 +259,30 @@ const [customers, setCustomers] = useState([
 
                     {/* MOBILE CARDS */}
                     <div className="md:hidden space-y-4 my-6">
-                        {customers.map((order, index) => (
+                        {customers.map((customer, index) => (
                             <div
-                                key={order.id}
+                                key={customer.id}
                                 className="border rounded-xl p-4 shadow-sm space-y-2"
                                 style={{
                                 background: index % 2 === 0 ? "#fff" : "#f8fafc",
                                 }}
                             >
                                 <div className="flex justify-between text-sm font-semibold">
-                                    <div className="text-md capitalize">{order.customerName}</div>
-                                    <div className="text-sm">{order.mobile}</div>
+                                    <div className="text-md capitalize">{customer.customerName}</div>
+                                    <div className="text-sm">{customer.mobile}</div>
                                     
                                 
                                 </div>
 
                                 <div>
-                                    <div className="text-sm text-gray-500">{order.email}</div>
-                                    <span className="block text-sm text-gray-500">{order.date}</span>
+                                    <div className="text-sm text-gray-500">{customer.email}</div>
+                                    <span className="block text-sm text-gray-500">{customer.date}</span>
                                 </div>
                                 <span className='text-sm'>
-                                        {order.address.city},
-                                        {order.address.state},
-                                        {order.address.pincode},
-                                        {order.address.country}
+                                        {customer.address.city},
+                                        {customer.address.state},
+                                        {customer.address.pincode},
+                                        {customer.address.country}
                                 </span>
                                 
                             </div>
