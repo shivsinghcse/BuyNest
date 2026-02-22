@@ -14,7 +14,7 @@ const Layout = ({children}) => {
         {
             label: 'Dashboard',
             icon: <i className="ri-dashboard-line text-lg text-zinc-300"></i>,
-            link: '/admin/dashboard'
+            link: '/admin'
         },
         {
             label: 'Customers',
@@ -61,6 +61,11 @@ const Layout = ({children}) => {
                             )
                         })
                     }
+
+                    <button onClick={()=>{alert("Logout success")}} className="group w-full px-8 py-4 border-b border-b-zinc-300 space-x-3 text-lg font-semibold text-zinc-300 text-left hover:bg-(--primary-color) hover:cursor-pointer">
+                        <i className="ri-logout-circle-line"></i>
+                        <label className="group-hover:cursor-pointer">Logout</label>
+                    </button>
                 </aside>
                 <section 
                     className=""
@@ -129,6 +134,11 @@ const Layout = ({children}) => {
                     }
                     <button  onClick={()=>{setMobileSize('0px')}}>
                         <i className="ri-close-line text-2xl w-8 h-8 absolute top-3 right-3 text-zinc-300 border border-zinc-300 rounded-full"></i>
+                    </button>
+
+                    <button onClick={()=>{alert("Logout success")}} className="group w-full px-8 py-4 border-b border-b-zinc-300 space-x-3 text-lg font-semibold text-zinc-300 text-left hover:bg-(--primary-color) hover:cursor-pointer">
+                        <i className="ri-logout-circle-line"></i>
+                        <label className="group-hover:cursor-pointer">Logout</label>
                     </button>
                 </aside>
                 <section 
