@@ -227,6 +227,7 @@ const [payments, setPayments] = useState([
                         <table className="min-w-225 w-full">
                         <thead>
                             <tr className="bg-(--secondary-color) text-zinc-300 text-sm">
+                                <th className="px-3 py-4">Payment Id</th>
                                 <th className="px-3 py-4">Customer</th>
                                 <th className="px-3">Email</th>
                                 <th className="px-3">Mobile</th>
@@ -245,19 +246,8 @@ const [payments, setPayments] = useState([
                                 background: index % 2 === 0 ? "#fff" : "#f1f5f9",
                                 }}
                             >
-                                <td className="capitalize px-3 py-4">
-                                    <div className='flex gap-3 items-center justify-center'>
-                                        <img 
-                                            src="/images/avatar.jpg" 
-                                            alt="customers image" 
-                                            className='w-8 h-8 rounded-full' 
-                                        />
-                                        <div className='flex flex-col font-semibold'>
-                                            <span>{payment.customerName}</span>
-                                            <small className='text-gray-500'>{payment.date}</small>
-                                        </div>
-                                    </div>
-                                </td>
+                                <td className="px-3">{payment.id}</td>
+                                <td className="capitalize px-3 py-4 font-semibold">{payment.customerName}</td>
                                 <td className="px-3">{payment.email}</td>
                                 <td className="px-3">{payment.mobile}</td>
                                 <td className="px-3">₹{payment.amount.toLocaleString()}</td>
@@ -286,10 +276,11 @@ const [payments, setPayments] = useState([
                                 }}
                             >
                                 <div className="flex justify-between text-sm font-semibold">
-                                    <div className="text-md capitalize">{payment.customerName}</div>
-                                    <span className="block text-sm ">₹{payment.amount.toLocaleString()}</span>
-                                    
-                                
+                                    <div className="text-md capitalize items-center flex">{payment.customerName}</div>
+                                    <div className='flex flex-col items-center'>
+                                        <div className="text-sm text-gray-500">{payment.id}</div>
+                                        <span className="block text-sm ">₹{payment.amount.toLocaleString()}</span>
+                                    </div>
                                 </div>
 
                                 <div>

@@ -73,7 +73,7 @@ const Layout = ({children}) => {
                         marginLeft: size,
                         transition: '0.3s',
                     }}>
-                    <nav className="bg-white py-4 px-8 shadow-xl flex justify-between items-center sticky top-0" >
+                    <nav className="bg-white py-4 px-8 shadow-xl flex justify-between items-center sticky top-0 z-1000" >
                         <div className="flex items-center gap-4">
                             <button 
                                 onClick={toggleDrawer} 
@@ -147,7 +147,7 @@ const Layout = ({children}) => {
                         // marginLeft: mobileSize,
                         // transition: '0.3s',
                     }}>
-                    <nav className="bg-white py-2 px-4 shadow-xl flex justify-between items-center sticky top-0" >
+                    <nav className="bg-white py-2 px-4 shadow-xl flex justify-between items-center sticky top-0 z-1000" >
                         <div className="flex items-center gap-4">
                             <button 
                                 onClick={()=>{mobileSize === '0px' ? setMobileSize('280px') : setMobileSize('0px')}} 
