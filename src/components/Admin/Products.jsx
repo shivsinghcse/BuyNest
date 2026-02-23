@@ -165,7 +165,7 @@ const Products = () => {
                                                 <h1 className="text-gray-800 text-md font-bold">{product.brand}</h1>
                                                 <div>
                                                     <i className="ri-star-fill font-semibold text-(--primary-color)"></i>
-                                                    <label className="font-semibold">{product.rating}</label>
+                                                    <label className="font-semibold">{product.rating.toFixed(1)}</label>
                                                 </div>
                                             </div>
                                             <label className="text-sm text-gray-800">{product.name}</label>
