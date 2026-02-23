@@ -11,13 +11,14 @@ import Dashboard from './components/Admin/Dashboard'
 import Customers from './components/Admin/Customers'
 import Payments from './components/Admin/Payments'
 import Setting from './components/Admin/Setting'
+import Home from './components/Home'
 
 const App = () => {
     return (
         <>
             <BrowserRouter>
                 <Routes>
-                    <Route path='/' element={<h1>Welcome to Homepage</h1>}/>
+                    <Route path='/' element={<Home />}/>
                     <Route path='/admin'>
                         <Route path="" element={<Dashboard />} />
                         <Route path="customers" element={<Customers />} />
