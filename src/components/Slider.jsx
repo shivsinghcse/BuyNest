@@ -22,7 +22,7 @@ const Slider = () => {
                 spaceBetween={30}
                 centeredSlides={true}
                 autoplay={{
-                delay: 1500,
+                delay: 2500,
                 disableOnInteraction: false,
                 }}
                 slidesPerView={1}

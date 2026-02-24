@@ -36,7 +36,7 @@ const Layout = ({children}) => {
                                 return(
                                     <li key={index}>
                                         <Link 
-                                            to="{menu.path}" 
+                                            to={menu.path} 
                                             className="block h-full py-5 px-6 text-center text-zinc-700 text-[17px] font-semibold hover:bg-(--primary-color) hover:text-white transition duration-300"
                                         >
                                             {menu.label}
@@ -110,6 +110,10 @@ const Layout = ({children}) => {
                                     <li>Mon - Sat, 9AM - 6PM</li>
                                 </ul>
                             </div>
+
+                            
+
+
                         </div>
                         
                         <div className="place-items-center my-8">

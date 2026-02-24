@@ -141,7 +141,7 @@ const LatestCollection = () => {
             <h1 className="text-3xl font-bold mb-16"><span className="inline-block w-20 border-2 border-gray-600 mx-2 align-middle rounded-full"></span>Latest Collections<span className="inline-block w-20 border-2 border-gray-600 mx-2 align-middle rounded-full"></span></h1>
 
 
-            <div className="grid grid-cols-5 gap-12">
+            <div className="grid md:grid-cols-5 grid-cols-1 gap-12">
                 {
                     latestCollection.map((item) => {
                         return (
