@@ -1,7 +1,22 @@
 import { Link } from "react-router-dom"
+import firebaseAppConfig from "../utils/firebase-config";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
 
+const auth = getAuth(firebaseAppConfig)
 
 const Layout = ({children}) => {
+    const [session, setSession] = useState(null)
+
+    useEffect(()=> {
+        onAuthStateChanged(auth, (user) => {
+            if(user){
+                setSession(user)
+            }
+        })
+    }, [])
+
+
 
     const menus = [
         {
@@ -50,7 +65,12 @@ const Layout = ({children}) => {
                                 <i className="ri-shopping-bag-2-line text-xl"></i>
                             </Link>
                             
-                            <Link to={'/login'} className="text-lg font-semibold px-6 py-2 bg-(--primary-color) text-white hover:cursor-pointer transition duration-300 border-2 border-(--primary-color) hover:bg-white hover:text-(--secondary-color) active:scale-95">Login</Link>
+                            {
+                                !session ?
+                                <Link to={'/login'} className="text-lg font-semibold px-6 py-2 bg-(--primary-color) text-white hover:cursor-pointer transition duration-300 border-2 border-(--primary-color) hover:bg-white hover:text-(--secondary-color) active:scale-95">Login</Link>
+                                :
+                                <h1>Profile</h1>
+                            }
                         </div>
 
                         

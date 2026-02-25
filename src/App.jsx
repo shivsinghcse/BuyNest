@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom'
 import 'remixicon/fonts/remixicon.css'
 import 'animate.css'
+import Swal from 'sweetalert2'
 import NotFound from './components/NotFound'
 import Products from './components/Admin/Products'
 import Orders from './components/Admin/Orders'
