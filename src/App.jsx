@@ -16,6 +16,7 @@ import Home from './components/Home'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import ContactUs from './components/ContactUs'
+import Collection from './components/Collection'
 
 const App = () => {
     return (
@@ -23,6 +24,7 @@ const App = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<Home />}/>
+                    <Route path='/collection' element={<Collection />}/>
                     <Route path='/contact' element={<ContactUs />}/>
                     <Route path='/login' element={<Login />}/>
                     <Route path='/signup' element={<Signup />}/>
