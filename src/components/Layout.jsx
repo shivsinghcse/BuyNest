@@ -9,12 +9,8 @@ const Layout = ({children}) => {
             path: '/',
         },
         {
-            label: 'Products',
-            path: '/products',
-        },
-        {
-            label: 'Category',
-            path: '/category',
+            label: 'Collection',
+            path: '/collection',
         },
         {
             label: 'Contact us',
@@ -46,22 +42,24 @@ const Layout = ({children}) => {
                             })
                         }
 
-                        <Link to={'/login'} className="text-lg font-semibold px-6 py-2 bg-(--primary-color) text-white hover:cursor-pointer transition duration-300 border-2 border-(--primary-color) hover:bg-white hover:text-(--secondary-color) active:scale-95">Login</Link>
-                        {/* <Link to={'/signup'} className="text-lg font-semibold px-6 py-2 bg-(--primary-color) text-white hover:cursor-pointer transition duration-300 border-2 border-(--primary-color) hover:bg-white hover:text-(--secondary-color) active:scale-95">SignUp</Link> */}
+                        <div className=" flex gap-6 items-center justify-center">
+                            <Link to={'/'} className=" p-2 rounded hover:bg-zinc-100 transition duration-300 active:scale-95 flex items-center justify-center w-10 h-10">
+                                <i className="ri-poker-hearts-line text-xl"></i>
+                            </Link>
+                            <Link to={'/'} className=" p-2 rounded hover:bg-zinc-100 transition duration-300 active:scale-95 flex items-center justify-center w-10 h-10">
+                                <i className="ri-shopping-bag-2-line text-xl"></i>
+                            </Link>
+                            
+                            <Link to={'/login'} className="text-lg font-semibold px-6 py-2 bg-(--primary-color) text-white hover:cursor-pointer transition duration-300 border-2 border-(--primary-color) hover:bg-white hover:text-(--secondary-color) active:scale-95">Login</Link>
+                        </div>
+
+                        
                     </ul>
                 </nav>
                 <div>
                     {children}
                 </div>
                 <footer className="w-full bg-(--primary-color)  py-8 px-16 gap-16 shadow-[0_-12px_30px_rgba(0,0,0,0.2)]">
-                        
-                        {/* <div className="grid grid-cols-5 mt-4">
-                            <h1 className="text-3xl font-bold text-white text-shadow-lg mb-4 underline underline-offset-4"><span className="text-(--secondary-color)">Buy</span>Nest</h1>
-                            <h1 className="text-3xl font-bold text-white/90 text-shadow mb-4">Categories</h1>
-                            <h1 className="text-3xl font-bold text-white/90 text-shadow mb-4">Quick Links</h1>
-                            <h1 className="text-3xl font-bold text-white/90 text-shadow mb-4">Policies</h1>
-                            <h1 className="text-3xl font-bold text-white/90 text-shadow mb-4">Customer Support</h1>
-                        </div> */}
                         <div className="grid md:grid-cols-5 gri-cols-1">
                             <div className="my-4">
                                 <h1 className="text-3xl font-bold text-white text-shadow-lg mb-4 underline underline-offset-4"><span className="text-(--secondary-color)">Buy</span>Nest</h1>

@@ -4,6 +4,7 @@ import {
     Route
 } from 'react-router-dom'
 import 'remixicon/fonts/remixicon.css'
+import 'animate.css'
 import NotFound from './components/NotFound'
 import Products from './components/Admin/Products'
 import Orders from './components/Admin/Orders'
@@ -12,6 +13,8 @@ import Customers from './components/Admin/Customers'
 import Payments from './components/Admin/Payments'
 import Setting from './components/Admin/Setting'
 import Home from './components/Home'
+import Login from './components/Login'
+import Signup from './components/Signup'
 
 const App = () => {
     return (
@@ -19,6 +22,8 @@ const App = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<Home />}/>
+                    <Route path='/login' element={<Login />}/>
+                    <Route path='/signup' element={<Signup />}/>
                     <Route path='/admin'>
                         <Route path="" element={<Dashboard />} />
                         <Route path="customers" element={<Customers />} />
