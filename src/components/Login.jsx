@@ -1,13 +1,50 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import firebaseAppConfig from "../utils/firebase-config"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 
+const auth = getAuth(firebaseAppConfig)
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [passwordType, setpasswordType] = useState('password')
+    const [error, setError] = useState(null)
+    const [loader, setLoader] = useState(false)
+    const [userInfo, setUserInfo] = useState({
+        userEmail: '',
+        userPassword: ''
+    })
 
-    const login = (e) => {
-        e.preventDefault()
+    const navigate = useNavigate()
+
+    const login = async (e) => {
+        try
+        {
+            e.preventDefault()
+            await signInWithEmailAndPassword(auth, userInfo.userEmail, userInfo.userPassword)
+            e.target.reset()
+            setLoader(true)
+            navigate('/')
+        }
+        catch(err)
+        {
+            setError(err.message)
+        }
+        finally
+        {
+            setLoader(false)
+        }
+    }
+
+    const handleOnChange = (e) =>{
+        const input = e.target
+        const name = input.name
+        const value = input.value
+        setUserInfo({
+            ...userInfo,
+            [name]: value
+        })
+        setError(null)
     }
 
     return (
@@ -27,6 +64,7 @@ const Login = () => {
                         <div className="flex flex-col gap-1">
                             <label htmlFor="email" className="text-lg font-semibold">Email</label>
                             <input 
+                                onChange={handleOnChange}
                                 type="email" 
                                 placeholder="johndoe@gmail.com" 
                                 id="email"
@@ -40,6 +78,7 @@ const Login = () => {
 
                             <label htmlFor="password" className="text-lg font-semibold">Password</label>
                             <input 
+                                onChange={handleOnChange}
                                 type={passwordType} 
                                 placeholder="********" 
                                 id="password" 
@@ -68,8 +107,34 @@ const Login = () => {
                             <p>Don&apos;t have an account ?</p>
                             <Link to={'/signup'} className="font-semibold text-(--primary-color) animate__animated animate__pulse animate__infinite animate__slower">Register now</Link>
                         </div>
-                    </form>
+
+                        {error && (
+                                <div className="mt-3 bg-red-200 px-4 py-2 rounded animate__animated animate__pulse flex justify-between items-center">
+                                    <p>{error}</p>
+                                    <button
+                                        className="hover:cursor-pointer hover:border w-6 h-6 rounded-full flex justify-center items-center"
+                                        onClick={() => setError(null)}
+                                    >
+                                        <i className="ri-close-line"></i>
+                                    </button>
+                                </div>
+                            )
+                        }
+                    </form>    
                 </div>
+                {loader && (
+                            <div className="w-full h-full bg-[#deefe7d7] fixed top-0 left-0 flex flex-col justify-center items-center">
+                                <svg
+                                    className="size-16 rounded-full border-6 border-t-[#159A9C] border-[#B4BEC9] animate-spin"
+                                    viewBox="0 0 24 24"
+                                ></svg>
+
+                                <h1 className="text-3xl text-[#159A9C] font-bold">
+                                    Redirecting to Home page...
+                                </h1>
+                            </div>
+                        )
+                }
             </div>
         </>
     )

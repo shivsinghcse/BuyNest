@@ -1,21 +1,24 @@
 import { Link } from "react-router-dom"
 import firebaseAppConfig from "../utils/firebase-config";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 const auth = getAuth(firebaseAppConfig)
 
 const Layout = ({children}) => {
     const [session, setSession] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const[logOutOpen, setLogOutOpen] = useState(false)
 
-    useEffect(()=> {
-        onAuthStateChanged(auth, (user) => {
-            if(user){
-                setSession(user)
-            }
+    
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setSession(user || null)
+            setLoading(false)
         })
-    }, [])
 
+        return unsubscribe
+    }, [])
 
 
     const menus = [
@@ -32,6 +35,8 @@ const Layout = ({children}) => {
             path: '/contact',
         },
     ];
+
+    console.log(session);
     
     return(
         <>
@@ -66,10 +71,45 @@ const Layout = ({children}) => {
                             </Link>
                             
                             {
-                                !session ?
-                                <Link to={'/login'} className="text-lg font-semibold px-6 py-2 bg-(--primary-color) text-white hover:cursor-pointer transition duration-300 border-2 border-(--primary-color) hover:bg-white hover:text-(--secondary-color) active:scale-95">Login</Link>
-                                :
-                                <h1>Profile</h1>
+                                loading ? (
+                                    <div className="w-10 h-10 rounded-full animate-pulse"></div>
+                                ) : session !== null ? (
+                                    <div className="relative" onClick={() => setLogOutOpen(!logOutOpen)}>
+                                        <img
+                                            src="/images/user.jpg"
+                                            alt="default_user_image"
+                                            className="w-10 h-10 rounded-full border-2 border-(--primary-color) hover:cursor-pointer"
+                                        />
+
+                                        {logOutOpen && (
+                                            <div className="w-36   absolute top-11 -left-15 bg-white shadow-xl shadow-gray-400  rounded-md animate__animated animate__fadeIn">
+                                                <Link
+                                                    to="/profile"
+                                                    className="flex  hover:bg-[#159a9c8f] hover:text-[#002333] px-3 py-2  border-b border-[#159a9c8f]"
+                                                >
+                                                    <i className="ri-user-3-line mr-2"></i>
+                                                    My Profile
+                                                </Link>
+                                                {/* <Link
+                                                    to="/cart"
+                                                    className="flex  hover:bg-[#159a9c8f] hover:text-[#002333] px-3 py-2  border-b border-[#159a9c8f]"
+                                                >
+                                                    <i className="ri-shopping-cart-fill mr-2"></i>
+                                                    Cart
+                                                </Link> */}
+                                                <button
+                                                    className="flex  hover:bg-[#159a9c8f] hover:text-[#002333] px-3 py-2 hover:cursor-pointer w-full"
+                                                    onClick={() => signOut(auth)}
+                                                >
+                                                    <i className="ri-logout-circle-line mr-2"></i>
+                                                    Logout
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>    
+                                  )  : (
+                                    <Link to={'/login'} className="text-lg font-semibold px-6 py-2 bg-(--primary-color) text-white hover:cursor-pointer transition duration-300 border-2 border-(--primary-color) hover:bg-white hover:text-(--secondary-color) active:scale-95">Login</Link>
+                                  )    
                             }
                         </div>
 

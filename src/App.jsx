@@ -18,6 +18,7 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import ContactUs from './components/ContactUs'
 import Collection from './components/Collection'
+import PreGuard from './components/Guard/PreGuard'
 
 const App = () => {
     return (
@@ -27,8 +28,10 @@ const App = () => {
                     <Route path='/' element={<Home />}/>
                     <Route path='/collection' element={<Collection />}/>
                     <Route path='/contact' element={<ContactUs />}/>
-                    <Route path='/login' element={<Login />}/>
-                    <Route path='/signup' element={<Signup />}/>
+                    <Route element={<PreGuard />}>
+                        <Route path='/login' element={<Login />}/>
+                        <Route path='/signup' element={<Signup />}/>
+                    </Route>
                     <Route path='/admin'>
                         <Route path="" element={<Dashboard />} />
                         <Route path="customers" element={<Customers />} />
