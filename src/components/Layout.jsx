@@ -35,8 +35,6 @@ const Layout = ({children}) => {
             path: '/contact',
         },
     ];
-
-    console.log(session);
     
     return(
         <>
@@ -63,10 +61,10 @@ const Layout = ({children}) => {
                         }
 
                         <div className=" flex gap-6 items-center justify-center">
-                            <Link to={'/'} className=" p-2 rounded hover:bg-zinc-100 transition duration-300 active:scale-95 flex items-center justify-center w-10 h-10">
+                            <Link to={'/wishlist'} className=" p-2 rounded hover:bg-zinc-100 transition duration-300 active:scale-95 flex items-center justify-center w-10 h-10">
                                 <i className="ri-poker-hearts-line text-xl"></i>
                             </Link>
-                            <Link to={'/'} className=" p-2 rounded hover:bg-zinc-100 transition duration-300 active:scale-95 flex items-center justify-center w-10 h-10">
+                            <Link to={'/cart'} className=" p-2 rounded hover:bg-zinc-100 transition duration-300 active:scale-95 flex items-center justify-center w-10 h-10">
                                 <i className="ri-shopping-bag-2-line text-xl"></i>
                             </Link>
                             

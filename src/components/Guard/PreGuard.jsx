@@ -8,7 +8,6 @@ const auth = getAuth(firebaseAppConfig)
 
 const PreGuard = () => {
     const [session, setSession] = useState(null)
-    const [loader, setLoader] = useState(null)
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {

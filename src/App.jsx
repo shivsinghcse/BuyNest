@@ -19,6 +19,7 @@ import Signup from './components/Signup'
 import ContactUs from './components/ContactUs'
 import Collection from './components/Collection'
 import PreGuard from './components/Guard/PreGuard'
+import Cart from './components/Cart'
 
 const App = () => {
     return (
@@ -28,6 +29,7 @@ const App = () => {
                     <Route path='/' element={<Home />}/>
                     <Route path='/collection' element={<Collection />}/>
                     <Route path='/contact' element={<ContactUs />}/>
+                    <Route path='/cart' element={<Cart />}/>
                     <Route element={<PreGuard />}>
                         <Route path='/login' element={<Login />}/>
                         <Route path='/signup' element={<Signup />}/>
