@@ -74,7 +74,7 @@ const Layout = ({children}) => {
                                         <img
                                             src={session.photoURL ? session.photoURL : "/images/user.jpg"}
                                             alt="default_user_image"
-                                            className="w-10 h-10 rounded-full border-2 border-(--primary-color) hover:cursor-pointer"
+                                            className="w-10 h-10 object-cover rounded-full border-2 border-(--primary-color) hover:cursor-pointer"
                                         />
 
                                         {logOutOpen && (

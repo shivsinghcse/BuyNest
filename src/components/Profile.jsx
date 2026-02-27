@@ -6,8 +6,10 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage"
 
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { getFirestore, collection, addDoc } from "firebase/firestore"
 
 const auth = getAuth(firebaseAppConfig)
+const db = getFirestore(firebaseAppConfig)
 const storage = getStorage()
 
 
@@ -26,7 +28,8 @@ const Profile = () => {
         userCity: '',
         userState: '',
         userCountry: '',
-        userPincode: ''
+        userPinCode: '',
+        userId: ''
     })
 
     useEffect(() => {
@@ -41,7 +44,7 @@ const Profile = () => {
                 navigate('/login')
             }
         })
-    }, [navigate])
+    }, [])
 
     useEffect(() => {
         if(session) {
@@ -50,21 +53,39 @@ const Profile = () => {
                     userName: session.displayName,
                     userEmail: session.email,
                     userMobile: session.phoneNumber ? session.phoneNumber : ''
-                })
+            })
+
+            setUserAddress({
+                ...userAddress,
+                userId: session.uid
+            })    
+
+            // fetching address
+
+
         }
         
     }, [session])
 
-    console.log(userInfo);
-    // console.log(session);
 
-    const handleInput = (e) => {
+    const handleUserProfileInput = (e) => {
         const input = e.target
         const name = input.name 
         const value = input.value 
 
         setUserInfo({
             ...userInfo,
+            [name] : value
+        })   
+    }
+
+    const handleUserAddressInput = (e) => {
+        const input = e.target
+        const name = input.name 
+        const value = input.value 
+
+        setUserAddress({
+            ...userAddress,
             [name] : value
         })   
     }
@@ -109,9 +130,27 @@ const Profile = () => {
         })
     }
 
-    const setAddress = (e) => {
-        e.preventDefault()
+    const setAddress = async (e) => {
+        try
+        {
+            e.preventDefault()
+            await addDoc(collection(db, "addresses"), userAddress)
+            Swal.fire({
+                icon: 'success',
+                title: 'Address saved'
+            })
+        }
+        catch(err)
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed!',
+                text: err.message
+            })
+        }
     }
+
+
     
     
 
@@ -157,7 +196,7 @@ const Profile = () => {
                 }
             </div>
 
-            <form className="grid grid-cols-2 gap-8 mt-6" onSubmit={saveProfileInfo}>
+            <form className="grid md:grid-cols-2 grid-cols-1 md:gap-8 gap-4 mt-6" onSubmit={saveProfileInfo}>
                 <div className="flex flex-col gap-2">
                     <label htmlFor="userName" className="font-semibold ">Fullname</label>
                     <input 
@@ -167,8 +206,8 @@ const Profile = () => {
                         placeholder="John Doe"
                         value={userInfo.userName}
                         required
-                        onChange={handleInput}
-                        className="border border-gray-400 py-1 px-4 rounded focus:outline-0" 
+                        onChange={handleUserProfileInput}
+                        className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0" 
                     />
                 </div>
 
@@ -183,8 +222,8 @@ const Profile = () => {
                         required
                         readOnly
                         disabled
-                        onChange={handleInput}
-                        className="border border-gray-400 py-1 px-4 rounded focus:outline-0" 
+                        onChange={handleUserProfileInput}
+                        className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0" 
                     />
                 </div>
 
@@ -197,8 +236,8 @@ const Profile = () => {
                         placeholder="+91 8965478952"
                         value={userInfo.userMobile}
                         required
-                        onChange={handleInput}
-                        className="border border-gray-400 py-1 px-4 rounded focus:outline-0" 
+                        onChange={handleUserProfileInput}
+                        className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0" 
                     />
                 </div>
 
@@ -215,7 +254,7 @@ const Profile = () => {
                     <h1 className="font-semibold text-xl">Update Delivery Address</h1>
                 </div>
                 <hr className="mt-2 mb-8 text-gray-300"/>
-                    <form action="" className="grid grid-cols-2 gap-8 mt-6" onSubmit={setAddress}>
+                    <form action="" className="grid md:grid-cols-2 grid-cols-1 md:gap-8 gap-4 mt-6" onSubmit={setAddress}>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="userAddress" className="font-semibold ">Address/Street/Vill</label>
                             <input 
@@ -223,10 +262,10 @@ const Profile = () => {
                                 name="userAddress"
                                 id="userAddress"
                                 placeholder="A-143, 7th Floor, Sovereign Corporate Tower, Sector- 136"
-                                value={userInfo.userAddress}
+                                // value={userInfo.userAddress}
                                 required
-                                onChange={handleInput}
-                                className="border border-gray-400 py-1 px-4 rounded focus:outline-0 " 
+                                onChange={handleUserAddressInput}
+                                className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0 " 
                             />
                         </div>
 
@@ -237,10 +276,10 @@ const Profile = () => {
                                 name="userCity"
                                 id="userCity"
                                 placeholder="Noida"
-                                value={userInfo.userCity}
+                                // value={userInfo.userCity}
                                 required
-                                onChange={handleInput}
-                                className="border border-gray-400 py-1 px-4 rounded focus:outline-0" 
+                                onChange={handleUserAddressInput}
+                                className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0" 
                             />
                         </div>
 
@@ -251,10 +290,10 @@ const Profile = () => {
                                 name="userState"
                                 id="userState"
                                 placeholder="Uttar Pradesh"
-                                value={userInfo.userState}
+                                // value={userInfo.userState}
                                 required
-                                onChange={handleInput}
-                                className="border border-gray-400 py-1 px-4 rounded focus:outline-0" 
+                                onChange={handleUserAddressInput}
+                                className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0" 
                             />
                         </div>
 
@@ -265,10 +304,10 @@ const Profile = () => {
                                 name="userCountry"
                                 id="userCountry"
                                 placeholder="India"
-                                value={userInfo.userCountry}
+                                // value={userInfo.userCountry}
                                 required
-                                onChange={handleInput}
-                                className="border border-gray-400 py-1 px-4 rounded focus:outline-0" 
+                                onChange={handleUserAddressInput}
+                                className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0" 
                             />
                         </div>
 
@@ -279,10 +318,10 @@ const Profile = () => {
                                 name="userPinCode"
                                 id="userPinCode"
                                 placeholder="256812"
-                                value={userInfo.userPincode}
+                                // value={userInfo.userPincode}
                                 required
-                                onChange={handleInput}
-                                className="border border-gray-400 py-1 px-4 rounded focus:outline-0" 
+                                onChange={handleUserAddressInput}
+                                className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0" 
                             />
                         </div>
 
