@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import firebaseAppConfig from "../utils/firebase-config"
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import Swal from 'sweetalert2'
 
 
@@ -38,6 +38,7 @@ const Signup = () => {
         {
             e.preventDefault()
             await createUserWithEmailAndPassword(auth, userInfo.userEmail, userInfo.userPassword)
+            updateProfile(auth.currentUser, {displayName: userInfo.userName})
             e.target.reset()
             setLoader(true)
             // Swal.fire({

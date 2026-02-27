@@ -20,6 +20,7 @@ import ContactUs from './components/ContactUs'
 import Collection from './components/Collection'
 import PreGuard from './components/Guard/PreGuard'
 import Cart from './components/Cart'
+import Profile from './components/Profile'
 
 const App = () => {
     return (
@@ -30,6 +31,7 @@ const App = () => {
                     <Route path='/collection' element={<Collection />}/>
                     <Route path='/contact' element={<ContactUs />}/>
                     <Route path='/cart' element={<Cart />}/>
+                    <Route path='/profile' element={<Profile />}/>
                     <Route element={<PreGuard />}>
                         <Route path='/login' element={<Login />}/>
                         <Route path='/signup' element={<Signup />}/>

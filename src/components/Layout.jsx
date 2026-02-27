@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import firebaseAppConfig from "../utils/firebase-config";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 const auth = getAuth(firebaseAppConfig)
@@ -16,10 +16,8 @@ const Layout = ({children}) => {
             setSession(user || null)
             setLoading(false)
         })
-
         return unsubscribe
     }, [])
-
 
     const menus = [
         {
@@ -74,7 +72,7 @@ const Layout = ({children}) => {
                                 ) : session !== null ? (
                                     <div className="relative" onClick={() => setLogOutOpen(!logOutOpen)}>
                                         <img
-                                            src="/images/user.jpg"
+                                            src={session.photoURL ? session.photoURL : "/images/user.jpg"}
                                             alt="default_user_image"
                                             className="w-10 h-10 rounded-full border-2 border-(--primary-color) hover:cursor-pointer"
                                         />
@@ -82,7 +80,7 @@ const Layout = ({children}) => {
                                         {logOutOpen && (
                                             <div className="w-36   absolute top-11 -left-15 bg-white shadow-xl shadow-gray-400  rounded-md animate__animated animate__fadeIn">
                                                 <Link
-                                                    to="/profile"
+                                                    to={"/profile"}
                                                     className="flex  hover:bg-[#159a9c8f] hover:text-[#002333] px-3 py-2  border-b border-[#159a9c8f]"
                                                 >
                                                     <i className="ri-user-3-line mr-2"></i>
