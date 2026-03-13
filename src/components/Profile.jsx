@@ -6,7 +6,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage"
 
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { getFirestore, collection, addDoc } from "firebase/firestore"
+import { getFirestore, collection, addDoc, getDocs, query, where, updateDoc, doc } from "firebase/firestore"
 
 const auth = getAuth(firebaseAppConfig)
 const db = getFirestore(firebaseAppConfig)
@@ -16,6 +16,9 @@ const storage = getStorage()
 const Profile = () => {
     const [session, setSession] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [isAddress, setIsAddress] = useState(false)
+    const [docId, setDocId] = useState(null)
+    const [isUpdated, setIsUpdated] = useState(false)
     const navigate = useNavigate()
     const [userInfo, setUserInfo] = useState({
         userName: '',
@@ -47,25 +50,59 @@ const Profile = () => {
     }, [])
 
     useEffect(() => {
-        if(session) {
-            setUserInfo({
-                    ...userInfo,
-                    userName: session.displayName,
-                    userEmail: session.email,
-                    userMobile: session.phoneNumber ? session.phoneNumber : ''
-            })
-
-            setUserAddress({
-                ...userAddress,
-                userId: session.uid
-            })    
-
-            // fetching address
-
-
+        const req = async () => {
+            if(session) {
+                setUserInfo({
+                        ...userInfo,
+                        userName: session.displayName,
+                        userEmail: session.email,
+                        userMobile: session.phoneNumber ? session.phoneNumber : ''
+                })
+                
+                setUserAddress({
+                    ...userAddress,
+                    userId: session.uid
+                })    
+                
+                // fetching address
+                
+                const col = collection(db, "addresses")
+                const q = query(col, where("userId", "==", auth.currentUser.uid))
+                
+                try
+                {
+                    const snapshot = await getDocs(q)
+                    
+                    setIsAddress(!snapshot.empty)
+                    
+                    snapshot.forEach(doc => {
+                        setDocId(doc.id)
+                        const address = doc.data()
+                        if(address)
+                            {
+                                setUserAddress({
+                                        ...userAddress,
+                                        ...address
+                                })
+                            }
+                        else
+                            {
+                                console.log("no");
+                            }
+                        
+                    })
+                }
+                catch(err)
+                {
+                    console.log(err);
+                }
+                
+            }
         }
+
+        req()
         
-    }, [session])
+    }, [session, isUpdated])
 
 
     const handleUserProfileInput = (e) => {
@@ -135,6 +172,8 @@ const Profile = () => {
         {
             e.preventDefault()
             await addDoc(collection(db, "addresses"), userAddress)
+            setIsAddress(true)
+            setIsUpdated(!isUpdated)
             Swal.fire({
                 icon: 'success',
                 title: 'Address saved'
@@ -151,7 +190,26 @@ const Profile = () => {
     }
 
 
-    
+    const updateAddress = async (e) => {
+        try
+        {
+            e.preventDefault()
+            const ref = doc(db, "addresses", docId)
+            await updateDoc(ref, userAddress)
+            Swal.fire({
+                icon: 'success',
+                title: 'Address updated'
+            })
+        }
+        catch(err)
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed!',
+                text: err.message
+            })
+        }
+    }
     
 
     if(session === null){
@@ -254,7 +312,7 @@ const Profile = () => {
                     <h1 className="font-semibold text-xl">Update Delivery Address</h1>
                 </div>
                 <hr className="mt-2 mb-8 text-gray-300"/>
-                    <form action="" className="grid md:grid-cols-2 grid-cols-1 md:gap-8 gap-4 mt-6" onSubmit={setAddress}>
+                    <form action="" className="grid md:grid-cols-2 grid-cols-1 md:gap-8 gap-4 mt-6" onSubmit={isAddress ? updateAddress : setAddress}>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="userAddress" className="font-semibold ">Address/Street/Vill</label>
                             <input 
@@ -262,7 +320,7 @@ const Profile = () => {
                                 name="userAddress"
                                 id="userAddress"
                                 placeholder="A-143, 7th Floor, Sovereign Corporate Tower, Sector- 136"
-                                // value={userInfo.userAddress}
+                                value={userAddress.userAddress}
                                 required
                                 onChange={handleUserAddressInput}
                                 className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0 " 
@@ -276,7 +334,7 @@ const Profile = () => {
                                 name="userCity"
                                 id="userCity"
                                 placeholder="Noida"
-                                // value={userInfo.userCity}
+                                value={userAddress.userCity}
                                 required
                                 onChange={handleUserAddressInput}
                                 className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0" 
@@ -290,7 +348,7 @@ const Profile = () => {
                                 name="userState"
                                 id="userState"
                                 placeholder="Uttar Pradesh"
-                                // value={userInfo.userState}
+                                value={userAddress.userState}
                                 required
                                 onChange={handleUserAddressInput}
                                 className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0" 
@@ -304,7 +362,7 @@ const Profile = () => {
                                 name="userCountry"
                                 id="userCountry"
                                 placeholder="India"
-                                // value={userInfo.userCountry}
+                                value={userAddress.userCountry}
                                 required
                                 onChange={handleUserAddressInput}
                                 className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0" 
@@ -318,7 +376,7 @@ const Profile = () => {
                                 name="userPinCode"
                                 id="userPinCode"
                                 placeholder="256812"
-                                // value={userInfo.userPincode}
+                                value={userAddress.userPinCode}
                                 required
                                 onChange={handleUserAddressInput}
                                 className="bg-white border border-gray-400 py-1 px-4 rounded focus:outline-0" 
@@ -327,7 +385,7 @@ const Profile = () => {
 
                         <div></div>
 
-                        <button className="bg-(--primary-color) text-white w-fit px-8 py-2 font-bold text-lg hover:cursor-pointer shadow">Save</button>
+                        <button className="bg-(--primary-color) text-white w-fit px-8 py-2 font-bold text-lg hover:cursor-pointer shadow">{isAddress ? 'Update' : 'Save'}</button>
                 </form>
             </div>
             
