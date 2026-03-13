@@ -1,75 +1,45 @@
 import Layout from "./Layout"
+import { useEffect, useState } from "react"
 import firebaseAppConfig from "../utils/firebase-config"
-import { getFirestore,  collection } from "firebase/firestore"
+import { getFirestore, getDocs, collection, query, where } from "firebase/firestore"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+
+const auth = getAuth(firebaseAppConfig)
+const db = getFirestore(firebaseAppConfig)
+
 const Cart = () => {
-    const cartItems = [
-        {
-        id: "PRD013",
-        title: "Men's Casual Linen Shirt",
-        brand: "AuraFashion",
-        price: 1349,
-        discount: 21,
-        rating: 4.4,
-        stock: 15,
-        image: "/products/shirt13.jpg",
-        size: 'M'
-      },
-        {
-        id: "PRD011",
-        title: "Men's Casual Linen Shirt",
-        brand: "AuraFashion",
-        price: 1349,
-        discount: 21,
-        rating: 4.4,
-        stock: 15,
-        image: "/products/shirt13.jpg",
-        size: 'M'
-      },
-        {
-        id: "PRD011",
-        title: "Men's Casual Linen Shirt",
-        brand: "AuraFashion",
-        price: 1349,
-        discount: 21,
-        rating: 4.4,
-        stock: 15,
-        image: "/products/shirt13.jpg",
-        size: 'M'
-      },
-        {
-        id: "PRD011",
-        title: "Men's Casual Linen Shirt",
-        brand: "AuraFashion",
-        price: 1349,
-        discount: 21,
-        rating: 4.4,
-        stock: 15,
-        image: "/products/shirt13.jpg",
-        size: 'M'
-      },
-        {
-        id: "PRD011",
-        title: "Men's Casual Linen Shirt",
-        brand: "AuraFashion",
-        price: 1349,
-        discount: 21,
-        rating: 4.4,
-        stock: 15,
-        image: "/products/shirt13.jpg",
-        size: 'M'
-      },
-        {
-        id: "PRD011",
-        title: "Men's Casual Linen Shirt",
-        brand: "AuraFashion",
-        price: 1349,
-        discount: 21,
-        rating: 4.4,
-        stock: 15,
-        image: "/products/shirt13.jpg",
-        size: 'M'
-      },
-    ]
+    const [session, setSession] = useState(null)
+    const [cartItems, setCartItems] = useState([])
+
+    useEffect(()=>{
+        onAuthStateChanged(auth, (user) => {
+            if(user)
+            {
+                setSession(user)
+            }
+            else{
+                setSession(null)
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        const request = async () => {
+            if(session){
+                const col = collection(db, 'carts')
+                const q = query(col, where('userId', '==', session.uid))
+                const snapshot = await getDocs(q)
+                const temp = []
+                snapshot.forEach((doc) => {
+                    const document = doc.data()
+                    temp.push(document)
+                })
+                setCartItems(temp)
+            }
+        }
+        request()
+    }, [session])
+
 
     const totalAmount = cartItems.reduce((acc, item) => acc + item.price, 0)
     const totalDiscount = cartItems.reduce((acc, item) => acc +  (item.price * (item.discount)/100), 0)
@@ -140,7 +110,7 @@ const Cart = () => {
 
                         <div className="flex justify-between">
                             <label className="font-semibold">Total Amount</label>
-                            <label className="font-semibold">₹{totalAmount - totalDiscount}</label>
+                            <label className="font-semibold">₹{(totalAmount - totalDiscount).toLocaleString()}</label>
                         </div>
 
                         <div className="bg-white py-2 px-4 rounded-md">
