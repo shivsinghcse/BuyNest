@@ -1,5 +1,6 @@
 import Layout from "./Layout"
-
+import firebaseAppConfig from "../utils/firebase-config"
+import { getFirestore,  collection } from "firebase/firestore"
 const Cart = () => {
     const cartItems = [
         {

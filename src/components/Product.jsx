@@ -1,9 +1,35 @@
+import firebaseAppConfig from "../utils/firebase-config";
+import { getFirestore, addDoc, collection } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import Swal from 'sweetalert2'
 
+const db = getFirestore(firebaseAppConfig)
 
 const Product = (props) => {
     const item = props.data
 
-    
+    const addToCart = async (item) => {
+        try
+        {
+            const auth = getAuth(firebaseAppConfig)
+            await addDoc(collection(db, 'carts'), {
+                ...item,
+                userId: auth.currentUser.uid
+            })
+            Swal.fire({
+                icon: 'success',
+                title: 'Item added'
+            })
+        }
+        catch(err)
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed',
+                text: err.message
+            })
+        }
+    }
     
     return (
         <div className=" p-4 shadow-xl hover:shadow-(color:--primary-color)/30 rounded-xl hover:cursor-pointer transition duration-300">
@@ -34,7 +60,7 @@ const Product = (props) => {
                     <del className="text-gray-600 font-bold"> ₹{item.price.toLocaleString()}</del>
                     <span className="text-red-600">({item.discount}% OFF)</span>
                 </div>
-                <button className="border-2 border-(--primary-color) mt-3 py-2 w-full text-lg font-bold text-(--primary-color) hover:cursor-pointer transition duration-300 active:scale-95 hover:bg-(--primary-color) hover:text-white hover:shadow-lg hover:-translate-y-1">Add to cart</button>
+                <button className="border-2 border-(--primary-color) mt-3 py-2 w-full text-lg font-bold text-(--primary-color) hover:cursor-pointer transition duration-300 active:scale-95 hover:bg-(--primary-color) hover:text-white hover:shadow-lg hover:-translate-y-1" onClick={() => addToCart(item)}>Add to cart</button>
             </div>
         </div>
     )
